@@ -1,4 +1,11 @@
 # nuimo-node-demo
-Sample console app to show readings from Nuimo BTLE device
+Sample apps to demonstrate functionality of Nuimo BTLE device
 
-run `npm install` then `node index.js`
+##Setup
+run `npm install` 
+
+##Demo with Logging:
+run `node index.js`
+
+##Demo of volume control (OSX):
+run `node volume.js`
