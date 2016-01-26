@@ -1,6 +1,11 @@
 var Nuimo = require('./nuimo');
 var spawn = require('child_process').spawn;
 var Rx = require('rx');
+var os = require('os');
+
+if(os.platform() != 'darwin'){
+    throw 'Sorry, this demo only works on a Mac';
+}
 
 var handlers = {};
 handlers[Nuimo.characteristics.BUTTON_CLICK] = characteristic => {
