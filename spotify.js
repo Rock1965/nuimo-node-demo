@@ -2,16 +2,26 @@ var Nuimo = require('./nuimo');
 var spawn = require('child_process').spawn;
 var Rx = require('rx');
 var os = require('os');
+var ledImages = require('./spotify_images');
 
 if(os.platform() != 'darwin'){
     throw 'Sorry, this demo only works on a Mac';
 }
 
 var handlers = {};
+var ledMatrix = undefined;
+var playing = true;
+
+handlers[Nuimo.characteristics.LED_MATRIX] = characteristic => {
+    ledMatrix = characteristic;
+};
+
 handlers[Nuimo.characteristics.BUTTON_CLICK] = characteristic => {
     console.log('listening for button click (play/pause)...');
     characteristic.on('read', (data, isNotification) => {
         if (data[0] === 1) {
+            playing = !playing;
+            ledMatrix.write(playing ? ledImages.play : ledImages.pause);
             spawn('osascript', ['-e', 'tell application "Spotify" to playpause']);
         }
     });
@@ -28,9 +38,11 @@ handlers[Nuimo.characteristics.SWIPE] = characteristic => {
                 // twice - the first to go to beginning of track
                 //         the second to go to previous track
                 spawn('osascript', ['-e', `${cmd}\n${cmd}`]);
+                ledMatrix.write(ledImages.previous);
                 break;
             default:
             spawn('osascript', ['-e', 'tell application "Spotify" to next track']);
+                ledMatrix.write(ledImages.next);
                 break;
         }
     });
@@ -59,8 +71,11 @@ handlers[Nuimo.characteristics.ROTATION] = characteristic => {
         var diff = amount;
         var func = 'my max(0, ';
         if (amount > 0){
+            ledMatrix.write(ledImages.up);
             diff = '+ ' + amount;
             func = 'my min(100, ';
+        } else {
+            ledMatrix.write(ledImages.down);
         }
         // AppleScript is new to me...
         // not sure if better way of calc'ing min/max
