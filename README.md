@@ -1,8 +1,12 @@
-# nuimo-node-demo
-Sample apps to demonstrate functionality of Nuimo BTLE device
+# nuimo-node
+Simple library to integrate with nuimo device. 
+Includes demos of functionality of Nuimo BTLE device
 
 ##Setup
 run `npm install` 
+
+#Demos
+To run demos, cd into examples, then...
 
 ##Demo with Logging:
 run `node index.js`

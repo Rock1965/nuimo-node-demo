@@ -1,15 +1,25 @@
 {
-  "name": "nuimo-node-demo",
-  "version": "1.0.0",
-  "description": "Sample demo to show output/readings from Nuimo BTLE device",
+  "name": "nuimo-node",
+  "version": "2.0.0",
+  "description": "Simple nuimo wrapper. Includes demos.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Brendon Parker",
   "license": "MIT",
+  "keywords": [
+    "nuimo",
+    "bluetooth",
+    "BLE",
+    "bluetooth low energy",
+    "bluetooth smart",
+    "central"
+  ],
   "dependencies": {
-    "noble": "^1.3.0",
-    "rx": "^4.0.7"
+    "noble": "^1.3.0"
+  },
+  "devDependencies": {
+    "rx": "^4.0.7"  
   }
 }
