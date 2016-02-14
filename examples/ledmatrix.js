@@ -1,5 +1,4 @@
 var nuimo = require('../index');
-var Rx = require('rx');
 var ledImages = require('./images');
 
 var handlers = {};

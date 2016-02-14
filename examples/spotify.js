@@ -1,6 +1,6 @@
 var nuimo = require('../index');
+var Aggregator = require('./aggregator');
 var spawn = require('child_process').spawn;
-var Rx = require('rx');
 var os = require('os');
 var ledImages = require('./images');
 
@@ -12,16 +12,8 @@ console.log('SPOTIFY DEMO');
 
 var handlers = {};
 var playing = true;
-
-// Idea here was to use Rx to capture some sort of average velocity every X ms
-// Not familiar enough with Rx so just using throttle(75)
-var observer;
-var source = Rx.Observable.create(o => {
-    observer = o;
-}).throttle(75);
-
-source.subscribe(amount => {
-    var diff = amount;
+var aggregator = new Aggregator().withCallback(amount => {
+    var diff = amount * .7;
     var func = 'my max(0, ';
     if (amount > 0){
         nuimo.writeToLEDs(ledImages.up);
@@ -53,7 +45,7 @@ source.subscribe(amount => {
     
     var cmd = funcs.join('\n') + `tell application "Spotify" to set sound volume to ${func}(get sound volume ${diff}))`;
     spawn('osascript', ['-e', cmd]);
-}, err => console.log('Error: %s', err), () => console.log('Completed'));
+});
 
 handlers[nuimo.EVENTS.Connected] = () => {
     console.log('Nuimo Connected!');
@@ -90,10 +82,10 @@ handlers[nuimo.CHARACTERISTICS.SWIPE] = (nuimo, data) => {
 handlers[nuimo.CHARACTERISTICS.ROTATION] = (nuimo, data) => {
     if (data[1] === 255) {
         var velocity = Math.round((255 - data[0]) / 255 * 100);
-        observer.onNext(-velocity);
+        aggregator.onNext(-velocity);
     } else {
         var velocity = Math.round(data[0] / 255 * 100);
-        observer.onNext(velocity);
+        aggregator.onNext(velocity);
     }
 };
 
