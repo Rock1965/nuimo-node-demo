@@ -21,6 +21,8 @@ This demo uses `AppleScript` to send commands to running Spotify app. It will:
  - Play/Pause (Button-Press)
  - Skip Tracks (Swipe)
 
+[![YouTube Demo](http://img.youtube.com/vi/7te_A4Vro08/0.jpg)](https://www.youtube.com/watch?v=7te_A4Vro08)
+
 ##Demo of led matrix:
 run `node ledmatrixdemo.js`
 
